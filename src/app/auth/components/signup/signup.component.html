@@ -1,0 +1,55 @@
+<div class="signup-container">
+  <button type="button" class=" btn close-btn justify-content-end" (click)="onCloseClick()">&#x2716;</button>
+  <h1>Sign Up</h1>
+
+  <form #signupForm="ngForm" (ngSubmit)="onSubmit(signupForm)">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" class="form-control" id="username" name="username" required [(ngModel)]="username"
+        #usernameInput="ngModel">
+      @if (usernameInput.errors?.['required'] && usernameInput.touched) {
+      <div class="alert alert-danger">
+        Username is required.
+      </div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input type="email" class="form-control" id="email" name="email" required [(ngModel)]="email"
+        #emailInput="ngModel">
+      @if (emailInput.errors?.['required'] && emailInput.touched) {
+      <div class="alert alert-danger">
+        Email is required.
+      </div>
+      }
+      @if (emailInput.errors?.['email'] && emailInput.touched) {
+      <div class="alert alert-danger">
+        Please enter a valid email address.
+      </div>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" class="form-control" id="password" name="password" required [(ngModel)]="password"
+        #passwordInput="ngModel">
+      @if (passwordInput.errors?.['required'] && passwordInput.touched) {
+      <div class="alert alert-danger">
+        Password is required.
+      </div>
+      }
+      @if (passwordInput.errors?.['minlength'] && passwordInput.touched) {
+      <div class="alert alert-danger">
+        Password must be at least 6 characters long.
+      </div>
+      }
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="signupForm.invalid">Sign Up</button>
+
+    <div class="links">
+      <a (click)="onCloseClick()">Already a member? Login</a>
+    </div>
+  </form>
+</div>
