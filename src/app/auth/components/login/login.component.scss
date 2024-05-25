@@ -1,0 +1,31 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: #f5f5f5;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  .links {
+    display:grid;
+    justify-content: space-between;
+    margin-top: 15px;
+    font-size: 0.8rem;
+  }
+  
+  .links a {
+    padding-top: 10px;
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .links a:hover {
+    color: #666;
+  }
+  
