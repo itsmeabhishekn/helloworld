@@ -1,29 +1,57 @@
 <div class="task-container">
+    <button class="logout-button" (click)="logout()">Logout</button>
+    @if (tasks.length>0) {
     <h2>Tasks</h2>
-    <ul class="taskList">
+    }
+    <mat-accordion>
         @for (task of tasks; track $index) {
-        <li>
-            <span [class.completed]="task.completed==true">{{ task.title }}</span>
-            <div class="justify-content-end">
+        <mat-expansion-panel hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <label class="switch">
+                        <input type="checkbox" [(ngModel)]="task.completed" [checked]="task.completed"
+                            (change)="updateTaskStatus(task, $event)">
+                        <span class="slider round"></span>
+                    </label>
+                    <span [class.completed]="task.completed">{{ task.title }}</span>
+                </mat-panel-title>
 
-                <span class="m-1" (click)="updateTask(task)">
+            </mat-expansion-panel-header>
+            <p>{{ task.description }}</p>
+            <div class="actions">
+                <span class="m-1" (click)="editTask(task)">
                     <i class="fa-solid fa-pen-to-square" style="cursor: pointer;"></i>
                 </span>
                 <span class="m-1" (click)="deleteTask(task)">
                     <i class="fa-solid fa-trash" style="cursor: pointer;"></i>
                 </span>
             </div>
-
-        </li>
+        </mat-expansion-panel>
         }
-    </ul>
+    </mat-accordion>
 
     <h3>Add New Task</h3>
-    <form (submit)="addTask()">
-        <input type="text" [(ngModel)]="newTask.title" [ngModelOptions]="{standalone: true}" placeholder="Title"
-            required />
-        <input type="text" [(ngModel)]="newTask.description" [ngModelOptions]="{standalone: true}"
-            placeholder="Description" />
-        <button type="submit">Add Task</button>
+    <form (submit)="isEditMode ? updateTask() : addTask()" class="task-form">
+        <div class="form-group">
+            <input type="text" [(ngModel)]="newTask.title" [ngModelOptions]="{standalone: true}" placeholder="Title"
+                required />
+        </div>
+        <div class="form-group">
+            <input type="text" [(ngModel)]="newTask.description" [ngModelOptions]="{standalone: true}"
+                placeholder="Description" />
+        </div>
+        <div class="form-group switch-group">
+            <label class="switch">
+                <input type="checkbox" [(ngModel)]="newTask.completed" [ngModelOptions]="{standalone: true}"
+                    id="newTaskCompleted">
+                <span class="slider round"></span>
+            </label>
+            <label for="newTaskCompleted">Completed</label>
+        </div>
+        <button type="submit">{{ isEditMode ? 'Update' : 'Add' }}</button>
     </form>
 </div>
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="square-jelly-box" [fullScreen]="true">
+    <p style="color: white"> Loading... </p>
+</ngx-spinner>

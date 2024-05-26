@@ -56,7 +56,7 @@ export class LoginComponent {
 
   openSignupModal() {
     const dialogRef = this.dialog.open(SignupComponent, {
-      width: '60%',
+      width: '80%',
       height: '60%',
     });
   }
