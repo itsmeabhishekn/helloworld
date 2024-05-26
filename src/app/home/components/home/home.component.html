@@ -1,0 +1,29 @@
+<div class="task-container">
+    <h2>Tasks</h2>
+    <ul class="taskList">
+        @for (task of tasks; track $index) {
+        <li>
+            <span [class.completed]="task.completed==true">{{ task.title }}</span>
+            <div class="justify-content-end">
+
+                <span class="m-1" (click)="updateTask(task)">
+                    <i class="fa-solid fa-pen-to-square" style="cursor: pointer;"></i>
+                </span>
+                <span class="m-1" (click)="deleteTask(task)">
+                    <i class="fa-solid fa-trash" style="cursor: pointer;"></i>
+                </span>
+            </div>
+
+        </li>
+        }
+    </ul>
+
+    <h3>Add New Task</h3>
+    <form (submit)="addTask()">
+        <input type="text" [(ngModel)]="newTask.title" [ngModelOptions]="{standalone: true}" placeholder="Title"
+            required />
+        <input type="text" [(ngModel)]="newTask.description" [ngModelOptions]="{standalone: true}"
+            placeholder="Description" />
+        <button type="submit">Add Task</button>
+    </form>
+</div>
