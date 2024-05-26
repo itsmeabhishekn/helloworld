@@ -41,7 +41,7 @@ export class LoginComponent {
     this.loginService.loginUser(user).subscribe(
       response => {
         this.toastService.showSuccess('Login Successful');
-        console.log('User logged in:', response);
+        localStorage.setItem('token', response.token);
         this.spinner.hide();
         this.router.navigate(['/home']);
       },
