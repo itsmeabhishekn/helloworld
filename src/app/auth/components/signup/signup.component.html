@@ -1,12 +1,22 @@
 <div class="signup-container">
   <button type="button" class=" btn close-btn justify-content-end" (click)="onCloseClick()">&#x2716;</button>
-  <h1>Sign Up</h1>
+  
+  <div class="Header-text-div">
+    <h1 class="Header-text">Create an account</h1>
+  </div>
+  <div class="Header-text2-div">
+    <p class="Header-text2">Let's get started </p>
+  </div>
 
   <form #signupForm="ngForm" (ngSubmit)="onSubmit(signupForm)">
     <div class="form-group">
-      <label for="username">Username</label>
-      <input type="text" class="form-control" id="username" name="username" required [(ngModel)]="username"
+      <!-- <div class="username">
+              <label class="user-text" for="username">Username</label>
+      </div> -->
+      <div>
+      <input type="text" class="Username-Text" id="username" name="username" placeholder="Username" required [(ngModel)]="username"
         #usernameInput="ngModel">
+      </div>
       @if (usernameInput.errors?.['required'] && usernameInput.touched) {
       <div class="alert alert-danger">
         Username is required.
@@ -15,9 +25,9 @@
     </div>
 
     <div class="form-group">
-      <label for="email">Email Address</label>
-      <input type="email" class="form-control" id="email" name="email" required [(ngModel)]="email"
-        #emailInput="ngModel">
+      <!-- <label for="email">Email Address</label> -->
+        <input type="email" class="email-text" id="email" name="email" placeholder="Email" required [(ngModel)]="email"
+          #emailInput="ngModel">
       @if (emailInput.errors?.['required'] && emailInput.touched) {
       <div class="alert alert-danger">
         Email is required.
@@ -31,8 +41,8 @@
     </div>
 
     <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" class="form-control" id="password" name="password" required [(ngModel)]="password"
+      <!-- <label for="password">Password</label> -->
+      <input type="password" class="password-text" id="password" name="password" placeholder="Password" required [(ngModel)]="password"
         #passwordInput="ngModel">
       @if (passwordInput.errors?.['required'] && passwordInput.touched) {
       <div class="alert alert-danger">
@@ -46,10 +56,10 @@
       }
     </div>
 
-    <button type="submit" class="btn btn-primary" [disabled]="signupForm.invalid">Sign Up</button>
+    <button type="submit" class="btn-primary" [disabled]="signupForm.invalid">Sign Up</button>
 
     <div class="links">
-      <a (click)="onCloseClick()">Already a member? Login</a>
+      <a (click)="onCloseClick()">Already a member? <span class="loginlink">Login</span></a>
     </div>
   </form>
 </div>
