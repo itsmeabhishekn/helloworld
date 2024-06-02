@@ -163,6 +163,13 @@ label {
     text-decoration: underline;
 }
 
+.mat-mdc-dialog-surface.mdc-dialog__surface ::ng-deep{
+     min-width: 600px;
+}
+.btn{
+    color: grey;
+}
+
 
 
     
