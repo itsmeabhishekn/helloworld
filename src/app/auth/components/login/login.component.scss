@@ -115,3 +115,9 @@ input[type="password"]:focus {
 .welcomeGif {
   height: 120px;
 }
+
+
+.mdc-dialog--open .mat-mdc-dialog-surface ::ng-deep {
+  overflow: hidden !important;
+}
+  

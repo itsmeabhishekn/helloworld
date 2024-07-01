@@ -1,19 +1,22 @@
 <div class="task-container">
-    <button class="logout-button" (click)="logout()">Logout</button>
+    <button class="logout-button" (click)="logout()">Logout<i class="fa-solid fa-right-from-bracket logoutIcon"></i></button>
     @if (tasks.length>0) {
-    <h2>Tasks</h2>
+    <h2>Tasks <i class="fa-solid fa-list-check"></i></h2>
     }
     <mat-accordion>
         @for (task of tasks; track $index) {
-        <mat-expansion-panel hideToggle>
+        <mat-expansion-panel hideToggle [ngClass]="{ 'highPriority': task.priority === 'high',
+        'lowPriority': task.priority === 'low',
+        'mediumPriority': task.priority === 'medium' }">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <label class="switch">
+
                         <input type="checkbox" [(ngModel)]="task.completed" [checked]="task.completed"
                             (change)="updateTaskStatus(task, $event)">
                         <span class="slider round"></span>
                     </label>
-                    <span [class.completed]="task.completed">{{ task.title }}</span>
+                    <span [class.completed]="task.completed">{{ task.title }} </span>
                 </mat-panel-title>
 
             </mat-expansion-panel-header>
@@ -30,8 +33,12 @@
         }
     </mat-accordion>
 
-    <h3>Add New Task</h3>
-    <form (submit)="isEditMode ? updateTask() : addTask()" class="task-form">
+    <h3>Add New Task 
+        <i (click)="showHideAddTask()" *ngIf="!isAddTaskExpanded" class="fa-solid fa-square-plus addTaskIcons"></i>
+        <i (click)="showHideAddTask()" *ngIf="isAddTaskExpanded"  class="fa-solid fa-square-minus addTaskIcons"></i>
+    </h3>
+    
+    <form *ngIf="isAddTaskExpanded" (submit)="isEditMode ? updateTask() : addTask()" class="task-form">
         <div class="form-group">
             <input type="text" [(ngModel)]="newTask.title" [ngModelOptions]="{standalone: true}" placeholder="Title"
                 required />
@@ -40,6 +47,21 @@
             <input type="text" [(ngModel)]="newTask.description" [ngModelOptions]="{standalone: true}"
                 placeholder="Description" />
         </div>
+
+        <div class="form-group">
+            <input type="date" [(ngModel)]="newTask.dueDate" [ngModelOptions]="{standalone: true}"
+                placeholder="Due Date" required />
+        </div>
+        <div class="form-group">
+            <select class="form-select" [(ngModel)]="newTask.priority" [ngModelOptions]="{standalone: true}"
+                id="priority" required>
+                <option value="" disabled selected>Select Priority</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+        </div>
+
         <div class="form-group switch-group">
             <label class="switch">
                 <input type="checkbox" [(ngModel)]="newTask.completed" [ngModelOptions]="{standalone: true}"

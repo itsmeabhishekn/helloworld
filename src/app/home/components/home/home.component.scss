@@ -5,10 +5,11 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  margin-top:30px;
+  margin-top: 30px;
 }
 
-h3,h2 {
+h3,
+h2 {
   font-size: 22px;
   margin-top: 20px;
   margin-bottom: 10px;
@@ -151,11 +152,11 @@ h3 {
   border-radius: 50%;
 }
 
-input:checked + .slider {
+input:checked+.slider {
   background-color: #28a745;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   transform: translateX(20px);
 }
 
@@ -173,4 +174,29 @@ input:checked + .slider:before {
 
 .logout-button:hover {
   background-color: #0056b3;
+}
+
+.highPriority {
+  border: 2px solid red;
+  margin :5px
+}
+
+.lowPriority {
+  border: 2px solid green;
+  margin :5px
+}
+
+.mediumPriority {
+  border: 2px solid rgb(255, 170, 0);
+  margin :5px
+}
+
+.addTaskIcons{
+  color: #0056b3;
+  padding-left:10px;
+}
+
+.logoutIcon{
+  padding-left:10px;
+  color: #e0ebff;;
 }
