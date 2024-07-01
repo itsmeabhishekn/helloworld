@@ -7,6 +7,7 @@ import { ToastService } from '../../../services/toast/toast.service';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { firstValueFrom } from 'rxjs';
 
 export enum TaskPriority {
   Low = 'low',
@@ -49,66 +50,82 @@ export class HomeComponent {
     this.loadTasks();
   }
 
-  loadTasks(): void {
+  async loadTasks(): Promise<void> {
     if (typeof window !== 'undefined') {
       this.showSpinner();
       const token = localStorage.getItem('token');
       if (token) {
-        this.taskService.getTasks().subscribe(tasks => {
-          this.tasks = tasks
+        try {
+          this.tasks = await firstValueFrom(this.taskService.getTasks());
+        } catch (error) {
+          console.error('Failed to load tasks', error);
+        } finally {
           this.hideSpinner();
-          console.log(this.tasks);
-        });
-
+        }
       }
     }
   }
 
-  addTask(): void {
+  async addTask(): Promise<void> {
     if (this.newTask.title) {
       this.showSpinner();
-      this.taskService.addTask(this.newTask).subscribe(task => {
-        this.newTask = { title: '', description: '' };
-        this.spinner.hide()
+      try {
+        await firstValueFrom(this.taskService.addTask(this.newTask));
         this.toastService.showSuccess('Task added successfully', 'Success');
+        this.resetEditMode();
+        this.loadTasks();
+      } catch (error) {
+        console.error('Failed to add task', error);
+      } finally {
         this.hideSpinner();
-        this.loadTasks()
-      });
+      }
     }
   }
 
-  updateTask(): void {
+  async updateTask(): Promise<void> {
     if (this.taskToEdit) {
       this.showSpinner();
-      this.taskService.updateTask(this.newTask).subscribe(() => {
+      try {
+        await firstValueFrom(this.taskService.updateTask(this.newTask));
         this.toastService.showSuccess('Task updated successfully', 'Success');
-        this.resetEditMode()
-        this.hideSpinner();
+        this.resetEditMode();
         this.loadTasks();
-      });
+      } catch (error) {
+        console.error('Failed to update task', error);
+      } finally {
+        this.hideSpinner();
+      }
     }
   }
-  updateTaskStatus(task: Task, event: Event): void {
+
+  async updateTaskStatus(task: Task, event: Event): Promise<void> {
     const checkbox = event.target as HTMLInputElement;
     task.completed = checkbox.checked;
     this.showSpinner();
-    this.taskService.updateTask(task).subscribe(() => {
-      this.toastService.showSuccess('Task updated successfully', 'Success');
-      this.hideSpinner();
+    try {
+      await firstValueFrom(this.taskService.updateTask(task));
+      this.toastService.showSuccess('Task status updated successfully', 'Success');
       this.loadTasks();
-      this.resetEditMode();
-    });
+    } catch (error) {
+      console.error('Failed to update task status', error);
+    } finally {
+      this.hideSpinner();
+    }
   }
 
-  deleteTask(task: Task): void {
+  async deleteTask(task: Task): Promise<void> {
     this.showSpinner();
-    this.taskService.deleteTask(task._id).subscribe(() => {
+    try {
+      await firstValueFrom(this.taskService.deleteTask(task._id!));
       this.toastService.showSuccess('Task deleted successfully', 'Success');
-      this.hideSpinner();
       this.loadTasks();
-      this.resetEditMode();
-    });
+    } catch (error) {
+      console.error('Failed to delete task', error);
+    } finally {
+      this.hideSpinner();
+    }
   }
+
 
   editTask(task: Task): void {
     this.newTask = { ...task };
@@ -117,9 +134,7 @@ export class HomeComponent {
   }
 
   resetEditMode(): void {
-    this.newTask = { title: '', description: '', completed: false };
-    this.taskToEdit = null;
-    this.isEditMode = false;
+      this.newTask = this.getEmptyTask();
   }
 
   showHideAddTask() {
@@ -137,6 +152,10 @@ export class HomeComponent {
 
   private hideSpinner() {
     this.spinner.hide();
+  }
+
+  private getEmptyTask(): Task {
+    return { title: '', description: '', completed: false, dueDate: '', priority: TaskPriority.Low };
   }
 
 }
